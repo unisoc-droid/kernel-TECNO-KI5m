@@ -1,0 +1,43 @@
+. "${ROOT_DIR}/${KERNEL_DIR}/build.config.gki.aarch64"
+
+# The Motorola release ZIP has no Git metadata. Use the pinned commit timestamp.
+SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-1748417887}
+LOCALVERSION="-${BRANCH%%-*}-${KMI_GENERATION}-ki5m"
+
+# Merge in the output directory so the donor defconfig stays usable by other builds.
+POST_DEFCONFIG_CMDS='(cd "${OUT_DIR}" &&
+    KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
+        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_early.fragment" &&
+    make ${TOOL_ARGS} O="${OUT_DIR}" "${MAKE_ARGS[@]}" olddefconfig)'
+
+export BSP_BUILD_KI5M=y
+MAKE_GOALS="Image modules dtbs"
+FILES="
+arch/arm64/boot/Image
+arch/arm64/boot/dts/sprd/ums9230-ki5m-base.dtb
+arch/arm64/boot/dts/sprd/ums9230-ki5m-overlay.dtbo
+Module.symvers
+System.map
+include/config/kernel.release
+modules.builtin
+modules.builtin.modinfo
+vmlinux
+"
+
+# Board distribution using in-tree suppliers. The generic profile provides the ABI reference.
+# The donor UMS9230 profile also builds without trimming or strict symbol-list enforcement.
+TRIM_NONLISTED_KMI=0
+KMI_SYMBOL_LIST_STRICT_MODE=0
+KMI_ENFORCED=0
+BUILD_GKI_ARTIFACTS=
+BUILD_GKI_CERTIFICATION_TOOLS=
+BUILD_SYSTEM_DLKM=0
+MODULES_LIST=
+MODULES_ORDER=
+EXT_MODULES=
+EXT_MODULES_MAKEFILE=
+DO_NOT_STRIP_MODULES=0
+
+DIST_CMDS='cp "${OUT_DIR}/.config" "${DIST_DIR}/.config" &&
+    cp "${ROOT_DIR}/${KERNEL_DIR}/android/ki5m_first_stage_modules"
+       "${ROOT_DIR}/${KERNEL_DIR}/android/ki5m_vendor_modules" "${DIST_DIR}/"'

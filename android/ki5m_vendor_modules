@@ -1,0 +1,7 @@
+nvmem_sprd_cache_efuse.ko
+nvmem-sc27xx-efuse.ko
+sprd_thermal.ko
+sprd_soc_thm.ko
+sc27xx_tsensor_thermal.ko
+zsmalloc.ko
+zram.ko

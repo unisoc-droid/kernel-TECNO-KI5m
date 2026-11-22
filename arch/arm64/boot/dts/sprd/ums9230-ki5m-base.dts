@@ -1,0 +1,51 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+#include "ums9230-base.dts"
+
+/ {
+	firmware {
+		android {
+			vbmeta {
+				parts = "vbmeta,boot,vendor_boot,dtbo,l_modem,pm_sys,l_ldsp,l_gdsp,l_agdsp";
+			};
+		};
+	};
+};
+
+&chosen {
+	stdout-path = "serial1:115200n8";
+	bootargs = "earlycon console=ttyS1,115200n8 loglevel=7 firmware_class.path=/odm/firmware,/vendor/firmware";
+};
+
+&reserved_memory {
+	/delete-node/ audiodsp-mem@88f00000;
+	/delete-node/ cp-mem@89600000;
+	/delete-node/ sysdump-uboot@9f000000;
+	/delete-node/ dmabuf,cma;
+
+	audiodsp_reserved: audiodsp-mem@89000000 {
+		reg = <0x0 0x89000000 0x0 0x00600000>;
+	};
+
+	cp_reserved: cp-modem@89600000 {
+		reg = <0x0 0x89600000 0x0 0x04900000>;
+	};
+
+	cma_share_1@9f000000 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 0x9f000000 0x0 0x01000000>;
+		reusable;
+	};
+
+	cma_share@f00000000 {
+		compatible = "shared-dma-pool";
+		reg = <0x0 0xf0000000 0x0 0x03000000>;
+		reusable;
+		linux,cma-default;
+	};
+};
+
+/* Slot A uses UFS. Keep the donor's 5.15 clock and reset specifiers. */
+&ufs {
+	vcc-supply = <&vddemmccore>;
+	status = "okay";
+};

@@ -1,0 +1,112 @@
+
+/*
+ * td4160 LCD config dtsi file for spreadtrum
+ *
+ * Copyright (C) 2022, Spreadtrum Communications Inc.
+ *
+ * SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+ */
+
+/ {
+	fragment {
+		target-path = "/";
+		__overlay__ {
+			lcds {
+				lcd_td4160_txd_mipi_hd: lcd_td4160_txd_mipi_hd {
+
+					sprd,dsi-work-mode = <1>; /* video burst mode*/
+					sprd,dsi-lane-number = <4>;
+					sprd,dsi-color-format = "rgb888";
+
+					sprd,phy-bit-clock = <1105000>;	/* kbps */
+					sprd,phy-escape-clock = <20000>;/* kHz */
+					sprd,vrr-enable;  /*90hz 60hz*/
+					//sprd,power-gpio-delay = <20>; ms
+					sprd,width-mm = <68>;
+					sprd,height-mm = <152>;
+					//sprd,dpi-clk-div = <6>;
+					//sprd,video-lp-cmd-enable = <1>;
+					//sprd,hporch-lp-disable = <1>;
+					sprd,esd-check-enable = <1>;
+					sprd,esd-check-mode = <0>;
+					sprd,esd-check-period = <2000>;
+					sprd,esd-check-regs = <0xA>;
+					sprd,esd-return-code = <0x9c>;
+
+					sprd,reset-on-sequence = <1 10>, <0 10>, <1 20>;
+					sprd,reset-off-sequence = <0 10>;
+
+					sprd,initial-command = [
+						29 00 00 02 B0 04
+						29 14 00 02 D6 00
+						29 00 00 28 C1 30 41 50 FA 01 00 00 10 00 00 00 00 40 0F 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+						29 00 00 19 CE 5D 58 62 6C 76 80 8B 95 9F A9 B3 CA E2 FA FC FE FF 0B 0F 03 04 00 03 6C
+						29 00 00 07 B8 06 90 00 00 00 32
+						29 00 00 07 B9 06 90 00 00 00 80
+						29 00 00 07 BA 06 90 00 00 00 80
+						29 00 00 03 51 00 00
+						29 00 00 02 53 2C
+						29 00 00 02 55 03
+						29 00 00 02 35 00
+						29 00 00 02 B0 03
+						15 78 00 01 11
+						15 14 00 01 29
+						];
+
+					sprd,sleep-in-command = [
+						15 14 00 01 28
+						15 78 00 01 10
+						];
+
+					sprd,sleep-out-command = [
+						15 78 00 01 11
+						15 14 00 01 29
+						];
+
+					sprd,cabc-on-command = [
+						29 00 00 02 55 03
+						];
+
+					sprd,cabc-off-command = [
+						29 00 00 02 55 00
+						];
+
+					oled-backlight {
+						//default-brightness = <900>;
+						//sprd,max-level = <4095>;
+						brightness-levels = [
+						39 00 00 03 51 06 66
+						];
+					};
+
+					display-timings {
+						native-mode = <&td4160_txd_timing0>;
+
+						td4160_txd_timing0: timing0 {
+							clock-frequency = <153600000>;
+							hactive = <720>;
+							vactive = <1612>;
+							hfront-porch = <155>;
+							hback-porch = <55>;
+							hsync-len = <4>;
+							vfront-porch = <180>;
+							vback-porch = <30>;
+							vsync-len = <4>;
+						};
+						td4160_txd_timing1: timing1 {
+							clock-frequency = <153600000>;
+							hactive = <720>;
+							vactive = <1612>;
+							hfront-porch = <155>;
+							hback-porch = <81>;
+							hsync-len = <4>;
+							vfront-porch = <1020>;
+							vback-porch = <30>;
+							vsync-len = <4>;
+						};
+					};
+				};
+			};
+		};
+	};
+};
