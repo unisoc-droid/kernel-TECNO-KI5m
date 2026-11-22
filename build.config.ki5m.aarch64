@@ -9,9 +9,9 @@ POST_DEFCONFIG_CMDS='(cd "${OUT_DIR}" &&
     KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
         .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_early.config" &&
     KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
-        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_soc.fragment" &&
+        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_soc.config" &&
     KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
-        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_device.fragment" &&
+        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_device.config" &&
     make ${TOOL_ARGS} O="${OUT_DIR}" "${MAKE_ARGS[@]}" olddefconfig)'
 
 export BSP_BUILD_KI5M=y
