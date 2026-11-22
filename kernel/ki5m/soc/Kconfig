@@ -1,0 +1,39 @@
+# SPDX-License-Identifier: GPL-2.0
+config KI5M_SOC_PROVIDERS
+	bool "KI5m SoC platform providers"
+	depends on KI5M_PLATFORM
+	default n
+	help
+	  Enable UMS9230/qogirl6 platform provider drivers:
+	  - unisoc_clock_trace: GPU clock trace provider
+	  - sprd_pm_callbacks: PM domain callbacks
+	  - sprd_devfeq_funcs: Devfreq operations provider
+	  - sprd_trusty_shim: Trusty SMC shim
+
+config UNISOC_CLOCK_TRACE
+	tristate "Unisoc clock trace provider"
+	depends on KI5M_SOC_PROVIDERS
+	default n
+	help
+	  Clock frequency tracing for Mali GPU DVFS.
+
+config SPRD_PM_CALLBACKS
+	tristate "Spreadtrum PM callbacks provider"
+	depends on KI5M_SOC_PROVIDERS
+	default n
+	help
+	  Power management callbacks for GPU power domain.
+
+config SPRD_DEVFEQ_FUNCS
+	tristate "Spreadtrum devfreq functions provider"
+	depends on KI5M_SOC_PROVIDERS
+	default n
+	help
+	  Devfreq operations for Mali GPU frequency scaling.
+
+config SPRD_TRUSTY_SHIM
+	tristate "Trusty SMC shim"
+	depends on KI5M_SOC_PROVIDERS && TRUSTY
+	default n
+	help
+	  SMC to Trusty IPC translation for GPU secure operations.

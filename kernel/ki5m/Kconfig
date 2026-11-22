@@ -1,0 +1,19 @@
+# SPDX-License-Identifier: GPL-2.0
+menu "KI5m Platform Support"
+
+config KI5M_PLATFORM
+	bool "KI5m (TECNO KI5m / UMS9230) platform support"
+	depends on ARCH_SPRD
+	default y
+	help
+	  Enable KI5m-specific platform support including DT overlays,
+	  device-specific drivers, and compatibility layer.
+
+if KI5M_PLATFORM
+
+source "kernel/ki5m/compat/Kconfig"
+source "kernel/ki5m/soc/Kconfig"
+source "kernel/ki5m/mali/Kconfig"
+
+endif # KI5M_PLATFORM
+endmenu

@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: GPL-2.0
+config KI5M_COMPAT
+	bool "KI5m kernel version compatibility layer"
+	depends on KI5M_PLATFORM
+	default y
+	help
+	  Provides version-agnostic APIs for folio, timer, workqueue,
+	  OPP, devfreq, DMA-BUF, and tracepoints.
+	  Automatically selects backports for 5.15 or native APIs for 6.1+.
+
+config KI5M_COMPAT_TEST
+	bool "KI5m compat layer KUnit tests"
+	depends on KI5M_COMPAT && KUNIT
+	default n
+	help
+	  Enable KUnit tests for compat layer folio, timer, workqueue,
+	  OPP, devfreq, and DMA-BUF operations.

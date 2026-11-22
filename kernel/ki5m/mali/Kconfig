@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: GPL-2.0
+config MALI_MIDGARD_KI5M
+	tristate "Mali GPU driver for KI5m (UMS9230/qogirl6)"
+	depends on KI5M_PLATFORM && KI5M_COMPAT
+	depends on SYNC_FILE && DEBUG_FS && PM_DEVFREQ && DEVFREQ_THERMAL
+	depends on THERMAL_OF && DMA_SHARED_BUFFER && DMABUF_HEAPS
+	depends on TRUSTY
+	default n
+	help
+	  Mali GPU driver integration for UMS9230/qogirl6 platform.
+	  Requires external Mali kbase source (Xilinx r54p1 or vendor BSP).
+	  This option enables the platform integration layer.
+
+config MALI_GPU_PM_KI5M
+	tristate "Mali GPU PM for KI5m"
+	depends on MALI_MIDGARD_KI5M
+	default n
+	help
+	  Generic Mali GPU power management with devfreq and thermal cooling.
+
+config MEMORY_GROUP_MANAGER_KI5M
+	tristate "Memory Group Manager for Mali CSF"
+	depends on MALI_MIDGARD_KI5M
+	default n
+	help
+	  CSF memory management for Mali-G57.
+
+config MALI_QOGIRL6_PLATFORM
+	tristate "qogirl6 platform integration for Mali"
+	depends on MALI_MIDGARD_KI5M
+	default n
+	help
+	  qogirl6-specific platform integration for Mali kbase.
