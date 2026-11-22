@@ -12,6 +12,7 @@
 #include <video/videomode.h>
 
 #include <drm/drm_atomic_helper.h>
+#include <linux/transsion_bias_voltage.h>
 
 #include "sprd_crtc.h"
 #include "sprd_dpu.h"
@@ -65,6 +66,16 @@ static int sprd_panel_unprepare(struct drm_panel *p)
 	int items, i;
 
 	DRM_INFO("%s()\n", __func__);
+
+	/* Native OCP2131 bias power-down. The stock driver called
+	 * bias_voltage_set_vol("lcm", 0) here. -ENODEV means the bias driver
+	 * has not probed yet; that is non-fatal for panel teardown. */
+	if (IS_ENABLED(CONFIG_TRANSSION_BIAS_VOLTAGE)) {
+		int ret = bias_voltage_set_vol("lcm", 0);
+
+		if (ret && ret != -ENODEV)
+			DRM_ERROR("bias power-down failed: %d\n", ret);
+	}
 
 	if (!panel->info.gpio_request_result) {
 		DRM_ERROR("GPIO request failed, do not config again\n");
@@ -143,6 +154,18 @@ static int sprd_panel_prepare(struct drm_panel *p)
 	int items, i, ret;
 
 	DRM_INFO("%s()\n", __func__);
+
+	/* Native OCP2131 bias power-up (stock: bias_voltage_set_vol("lcm", 1)).
+	 * If the bias driver has not probed yet, defer this panel's probe so
+	 * the regulator/bias rails are guaranteed available before the panel
+	 * reset sequence runs. */
+	if (IS_ENABLED(CONFIG_TRANSSION_BIAS_VOLTAGE)) {
+		ret = bias_voltage_set_vol("lcm", 1);
+		if (ret < 0) {
+			DRM_ERROR("bias power-up failed: %d\n", ret);
+			return ret;
+		}
+	}
 
 	ret = regulator_enable(panel->supply);
 	if (ret < 0)

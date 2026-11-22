@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: GPL-2.0
+# KI5m Device-Specific Configuration
+# Only KI5m-specific settings
+
+# LCD Bias Controller (OCP2131 on I2C5)
+CONFIG_I2C=y
+CONFIG_I2C_SPRD=y
+CONFIG_TRANSSION_BIAS_VOLTAGE=y
+
+# Legacy ION (Android 13 Gralloc 4.0)
+CONFIG_ION=y
+CONFIG_ION_SYSTEM_HEAP=y
+CONFIG_ION_CMA_HEAP=y
+CONFIG_ION_SPRD=y
+
+# Display/DRM
+CONFIG_UNISOC_DISP=y
+CONFIG_DRM_SPRD_DPU0=y
+CONFIG_DRM_SPRD_DSI=y
+CONFIG_UNISOC_GSP=y
+
+# IOMMU/DMA-BUF
+CONFIG_UNISOC_IOMMU=y
+CONFIG_UNISOC_DMABUF=y
+
+# Mali GPU (disabled by default - Phase 4)
+# CONFIG_MALI_MIDGARD_KI5M=m

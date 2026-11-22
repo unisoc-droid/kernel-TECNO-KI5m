@@ -16,8 +16,20 @@
 		reg = <0x0 0x9e000000 0x0 0x00ab0000>;
 	};
 
-	faceid-mem@ffa70000 {
+	faceid_mem: faceid-mem@ffa70000 {
 		reg = <0x0 0xffa70000 0x0 0x00500000>;
+	};
+};
+
+&ion {
+	#address-cells = <1>;
+	#size-cells = <0>;
+
+	heap@4 {
+		reg = <4>;
+		label = "carveout_fd";
+		type = <2>;
+		memory-region = <&faceid_mem>;
 	};
 };
 

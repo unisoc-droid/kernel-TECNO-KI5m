@@ -503,6 +503,16 @@ config SPRD_SOCID
 	help
 	  provoid a driver to get soc id.
 
+config TRANSSION_BIAS_VOLTAGE
+	tristate "Transsion OCP2131 LCD bias voltage driver"
+	depends on I2C && GPIOLIB && OF
+	help
+	  Native Linux 5.15 driver for the Transsion OCP2131 LCD bias
+	  controller found on the TECNO KI5m (UMS9230 / Unisoc T606).
+	  Reproduces the behavior of the stock transsion_bias_voltage.ko
+	  using DT-provided register indices and the verified voltage
+	  conversion formula. Say M or Y to enable panel bias control.
+
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"
