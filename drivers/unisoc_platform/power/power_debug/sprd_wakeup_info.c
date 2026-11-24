@@ -141,7 +141,7 @@ static void dt_irq_domain_names_get(struct device *dev, struct wakeup_info_data 
 	int i;
 	char *irq_domain_names[SPRD_PDBG_WS_DOMAIN_ID_MAX] = {
 		"sprd,pdbg-irq-domain-gic",
-		"sprd,pdbg-irq-domain-gpio",
+		"sprd,pdbg-irq-domain-gpio-name",
 		"sprd,pdbg-irq-domain-ana",
 		"sprd,pdbg-irq-domain-ana-eic",
 		"sprd,pdbg-irq-domain-ap-eic-dbnc",
