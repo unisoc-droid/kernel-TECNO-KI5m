@@ -100,7 +100,7 @@
 			sprd,esd-check-period = <1000>;
 			sprd,esd-check-register = <10>;
 			sprd,esd-check-value = <156>;
-			sprd,reset-on-sequence = <1 5> <0 5> <1 5> <0 5> <1 10>;
+			sprd,reset-on-sequence = <1 5>, <0 5>, <1 5>, <0 5>, <1 10>;
 			sprd,reset-off-sequence = <1 1>;
 			sprd,sleep-in-command = [13 14 00 01 28 13 78 00 01 10];
 			sprd,sleep-out-command = [13 78 00 01 11 13 14 00 01 29];
