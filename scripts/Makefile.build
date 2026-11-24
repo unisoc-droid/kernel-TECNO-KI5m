@@ -52,9 +52,8 @@ ifneq ($(hostprogs),)
 include $(srctree)/scripts/Makefile.host
 endif
 
-ifneq ($(dtb-y),)
-include scripts/Makefile.dtbo
-endif
+# scripts/Makefile.dtbo does not exist in this tree; dtb/dtbo rules live in
+# Makefile.lib (already included above). Removed stale include.
 
 # Do not include userprogs rules unless needed.
 # $(sort ...) is used here to remove duplicated words and excessive spaces.

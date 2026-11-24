@@ -153,35 +153,35 @@ static void bias_mode_flags(struct ocp2131_bias *bias, const char *name,
 			    int mode, unsigned int max_mode,
 			    bool *do_write1, bool *do_write2)
 {
-	unsigned int current;
+	unsigned int cur_mode;
 
 	if (!strcmp(name, "lcm")) {
 		/* Stock name=="lcm" path: lcm_mode_state = mode. */
-		current = bias->tp_mode_state;
+		cur_mode = bias->tp_mode_state;
 		bias->lcm_mode_state = mode;
 	} else {
 		/* Stock name=="" path: tp_mode_state = mode. */
-		current = bias->lcm_mode_state;
+		cur_mode = bias->lcm_mode_state;
 		bias->tp_mode_state = mode;
 	}
 
 	*do_write1 = false;
 	*do_write2 = false;
 
-	if (current == 0) {
+	if (cur_mode == 0) {
 		if (max_mode == 1) {
 			*do_write1 = true;
 			*do_write2 = true;
 		} else if (max_mode == 2) {
 			*do_write2 = true;
 		}
-	} else if (current == 1) {
+	} else if (cur_mode == 1) {
 		if (max_mode == 1) {
 			/* both flags zero: GPIO-only transition */
 		} else if (max_mode == 2) {
 			*do_write2 = true;
 		}
-	} else if (current == 2) {
+	} else if (cur_mode == 2) {
 		if (max_mode == 1) {
 			*do_write2 = true;
 		} else if (max_mode == 2) {
@@ -191,7 +191,7 @@ static void bias_mode_flags(struct ocp2131_bias *bias, const char *name,
 			*do_write2 = true;
 		}
 	}
-	/* current >= 3: stock computes zero flags for reachable inputs. */
+	/* cur_mode >= 3: stock computes zero flags for reachable inputs. */
 }
 
 /*
@@ -403,7 +403,7 @@ static int ocp2131_bias_remove(struct i2c_client *client)
 }
 
 static const struct i2c_device_id ocp2131_bias_id[] = {
-	{ "transsion_bias_voltage", 0 },
+	{ "transsion_bias", 0 },
 	{ }
 };
 MODULE_DEVICE_TABLE(i2c, ocp2131_bias_id);
