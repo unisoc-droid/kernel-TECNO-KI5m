@@ -1,7 +1,10 @@
 # SPDX-License-Identifier: GPL-2.0
 
 ifeq ($(BSP_BUILD_KI5M),y)
-dtb-$(CONFIG_ARCH_SPRD) += ums9230-ki5m-base.dtb ums9230-ki5m-overlay.dtbo
+# Build the KI5m trees unconditionally under BSP_BUILD_KI5M: the commmon
+# DTB/DTBO targets may run with gki_defconfig only (no CONFIG_ARCH_SPRD),
+# so keying this off CONFIG_ARCH_SPRD silently drops both files.
+dtb-y += ums9230-ki5m-base.dtb ums9230-ki5m-overlay.dtbo
 DTC_FLAGS_ums9230-ki5m-base += -@
 else
 
