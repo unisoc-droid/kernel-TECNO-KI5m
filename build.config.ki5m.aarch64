@@ -5,9 +5,11 @@ SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-1748417887}
 LOCALVERSION="-${BRANCH%%-*}-${KMI_GENERATION}-ki5m"
 
 # Merge in the output directory so the donor defconfig stays usable by other builds.
+# For GKI-certified builds, use ki5m_gki.config (no MODULE_SIG_ALL).
+# For production/vendor builds, use ki5m_early.config (with MODULE_SIG_ALL=y).
 POST_DEFCONFIG_CMDS='(cd "${OUT_DIR}" &&
     KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
-        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_early.config" &&
+        .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_gki.config" &&
     KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
         .config "${ROOT_DIR}/${KERNEL_DIR}/arch/arm64/configs/ki5m_soc.config" &&
     KCONFIG_CONFIG=.config "${ROOT_DIR}/${KERNEL_DIR}/scripts/kconfig/merge_config.sh" -m -r
@@ -28,16 +30,16 @@ modules.builtin.modinfo
 vmlinux
 "
 
-# Board distribution using in-tree suppliers. The generic profile provides the ABI reference.
-# The donor UMS9230 profile also builds without trimming or strict symbol-list enforcement.
-TRIM_NONLISTED_KMI=0
-KMI_SYMBOL_LIST_STRICT_MODE=0
-KMI_ENFORCED=0
-BUILD_GKI_ARTIFACTS=
-BUILD_GKI_CERTIFICATION_TOOLS=
-BUILD_SYSTEM_DLKM=0
-MODULES_LIST=
-MODULES_ORDER=
+# Board distribution using in-tree suppliers. GKI 2.0 enforcement enabled.
+# KMI_ENFORCED=1 requires KBUILD_SYMTYPES=1 hermetic LLVM toolchain.
+TRIM_NONLISTED_KMI=1
+KMI_SYMBOL_LIST_STRICT_MODE=1
+KMI_ENFORCED=1
+BUILD_GKI_ARTIFACTS=1
+BUILD_GKI_CERTIFICATION_TOOLS=1
+BUILD_SYSTEM_DLKM=1
+MODULES_LIST=${ROOT_DIR}/${KERNEL_DIR}/android/gki_system_dlkm_modules
+MODULES_ORDER=android/gki_aarch64_modules
 EXT_MODULES=
 EXT_MODULES_MAKEFILE=
 DO_NOT_STRIP_MODULES=0
